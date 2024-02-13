@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Działanie dwóch pętli</title>
+</head>
+
+<body>
+    <h1>Tabela generowana za pomocą dwóch pętli</h1>
+    <table id="myTable">
+        <!-- Tabela będzie wygenerowana tutaj -->
+    </table>
+
+    <script>
+    
+// Definicja funkcji
+function pobierzPogode(miasto) {
+    // Mapa z współrzędnymi geograficznymi dla miast
+    const miasta = {
+        'Warszawa': {lat: 52.233, lon: 21.033},
+        'Gdańsk': {lat: 54.346, lon: 18.649},
+        'Londyn': {lat: 51.507, lon: -0.127},
+        'Barcelona': {lat: 41.385, lon: 2.173},
+        'Nowy Jork': {lat: 40.712, lon: -74.005}
+    };
+
+    // Sprawdzenie, czy miasto jest na liście
+    if (!miasta[miasto]) {
+        console.error('Nieznane miasto.');
+        return;
+    }
+
+    // URL API
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${miasta[miasto].lat}&longitude=${miasta[miasto].lon}&hourly=temperature`;
+
+    // Wykonanie żądania GET za pomocą Fetch API
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log(`Temperatura w ${miasto} wynosi ${data.hourly.temperature[0]} stopni Celsjusza.`);
+        })
+        .catch(error => {
+            console.error('Wystąpił błąd:', error);
+        });
+}
+//test
+// Wywołanie funkcji
+pobierzPogode('Barcelona');
+
+    </script>
+</body>
+
+</html>
